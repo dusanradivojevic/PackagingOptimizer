@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31112.23
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Optimizator", "Optimizator\Optimizator.csproj", "{BB763F2F-8535-465B-93C7-ADFA5C39AA3A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Biblioteka", "Biblioteka\Biblioteka.csproj", "{0D122CEE-76BA-4B1C-B7B4-B8FBC14BA172}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BB763F2F-8535-465B-93C7-ADFA5C39AA3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB763F2F-8535-465B-93C7-ADFA5C39AA3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB763F2F-8535-465B-93C7-ADFA5C39AA3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB763F2F-8535-465B-93C7-ADFA5C39AA3A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D122CEE-76BA-4B1C-B7B4-B8FBC14BA172}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D122CEE-76BA-4B1C-B7B4-B8FBC14BA172}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D122CEE-76BA-4B1C-B7B4-B8FBC14BA172}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D122CEE-76BA-4B1C-B7B4-B8FBC14BA172}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6F064376-0CF4-4F36-AF26-CAF17949DE3C}
+	EndGlobalSection
+EndGlobal
