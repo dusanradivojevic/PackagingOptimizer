@@ -16,12 +16,9 @@ namespace Optimizator
             paneli = Sortiraj.PoPovrsini(paneli, SmerSortiranja.Opadajuce);
 
             kontejneri = FiniteFirstFit.Optimizuj(paneli, kontejneri.ToList());
-            IspisiKontejnere(kontejneri);
 
-            Console.WriteLine("Pritisni bilo sta!");
+            Console.WriteLine($"Minimalni broj kontejnera za pakovanje ovih panela je: {kontejneri.Count}");
             Console.ReadKey();
-
-            kontejneri = IsprazniKontejnere(kontejneri.ToList());
         }
 
         private static void IspisiKontejnere(ICollection<Kontejner> kontejneri)

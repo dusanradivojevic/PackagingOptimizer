@@ -31,7 +31,7 @@ namespace Biblioteka.Modeli
             if (Sirina - SirinaAktivnogNivoa >= panel.Sirina && 
                 (VisinaSledecegNivoa >= panel.Visina || VisinaSledecegNivoa == 0))
             {
-                // moze da se smesti u sirinu istog nivoa
+                // Može da se smesti u širinu aktivnog nivoa?
                 SmestiPanelUMatricu(SirinaAktivnogNivoa, panel.Sirina, VisinaAktivnogNivoa, panel.Visina);
 
                 VisinaSledecegNivoa += panel.Visina;
@@ -41,10 +41,11 @@ namespace Biblioteka.Modeli
                 return true;
             }
 
-            // ne moze da se smesti na trenutni nivo, probaj na sledeci
+            // Ne može da se smesti na aktivni nivo,
+            // da li može na sledeći?
             if (Visina - VisinaSledecegNivoa >= panel.Visina)
             {
-                // zapocni novi nivo i smesti ga tamo
+                // Započni novi nivo i smesti panel tamo.
                 VisinaAktivnogNivoa = VisinaSledecegNivoa;
                 VisinaSledecegNivoa += panel.Visina;
                 SirinaAktivnogNivoa = panel.Sirina;

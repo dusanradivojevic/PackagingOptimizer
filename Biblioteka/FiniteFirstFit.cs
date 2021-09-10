@@ -29,9 +29,9 @@ namespace Biblioteka
 
                 if (panelJeSmesten) continue;
                 
-                // posto panel nije smesten,
-                // dodajemo novi kontejner iz trenutno neaktivnih, raspolozivih kontejnera,
-                // dok ne smestimo panel
+                // Pošto panel nije smešten,
+                // dodajemo novi kontejner iz trenutno neaktivnih, raspoloživih kontejnera,
+                // dok ne smestimo panel ili dok nam ne ponestane kontejnera.
                 for(int i = indexPoslednjegDodatogKontejnera; i < kontejneri.Count; i++)
                 {
                     listaAktivnihKontejnera.Add(kontejneri[i]);

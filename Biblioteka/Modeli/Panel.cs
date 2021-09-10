@@ -6,10 +6,5 @@
         {
 
         }
-
-        public override string ToString()
-        {
-            return $"{Sirina} x {Visina}";
-        }
     }
 }
