@@ -34,7 +34,13 @@ namespace Biblioteka.Modeli
                 // Može da se smesti u širinu aktivnog nivoa?
                 SmestiPanelUMatricu(SirinaAktivnogNivoa, panel.Sirina, VisinaAktivnogNivoa, panel.Visina);
 
-                VisinaSledecegNivoa += panel.Visina;
+                if (VisinaSledecegNivoa == 0)
+                {
+                    // Samo prilikom pakovanja prvog panela
+                    // jer ce ubudece ova izmena biti radjena
+                    // prilikom otvaranja novog nivoa
+                    VisinaSledecegNivoa += panel.Visina;
+                }
                 SirinaAktivnogNivoa += panel.Sirina;
 
                 SpakovaniPaneli.Add(panel);
@@ -60,9 +66,9 @@ namespace Biblioteka.Modeli
         }
         private void SmestiPanelUMatricu(int pocetnaSirina, int sirinaPanela, int pocetnaVisina, int visinaPanela)
         {
-            for(int i = pocetnaVisina; i < visinaPanela; i++)
+            for(int i = pocetnaVisina; i < pocetnaVisina + visinaPanela; i++)
             {
-                for (int j = pocetnaSirina; j < sirinaPanela; j++)
+                for (int j = pocetnaSirina; j < pocetnaSirina + sirinaPanela; j++)
                 {
                     MatricaProstora[i, j] = true;
                 }
