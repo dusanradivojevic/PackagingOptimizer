@@ -28,43 +28,54 @@ namespace Biblioteka.Modeli
         {
             if (panel.Sirina > Sirina || panel.Visina > Visina) return false;
 
+            // Može da se smesti u širinu aktivnog nivoa?
             if (Sirina - SirinaAktivnogNivoa >= panel.Sirina && 
                 (VisinaSledecegNivoa >= panel.Visina || VisinaSledecegNivoa == 0))
             {
-                // Može da se smesti u širinu aktivnog nivoa?
-                SmestiPanelUMatricu(SirinaAktivnogNivoa, panel.Sirina, VisinaAktivnogNivoa, panel.Visina);
-
-                if (VisinaSledecegNivoa == 0)
-                {
-                    // Samo prilikom pakovanja prvog panela
-                    // jer ce ubudece ova izmena biti radjena
-                    // prilikom otvaranja novog nivoa
-                    VisinaSledecegNivoa += panel.Visina;
-                }
-                SirinaAktivnogNivoa += panel.Sirina;
-
-                SpakovaniPaneli.Add(panel);
-                return true;
+                return SmestiPanelNaAktivniNivo(panel);
             }
 
             // Ne može da se smesti na aktivni nivo,
             // da li može na sledeći?
             if (Visina - VisinaSledecegNivoa >= panel.Visina)
             {
-                // Započni novi nivo i smesti panel tamo.
-                VisinaAktivnogNivoa = VisinaSledecegNivoa;
-                VisinaSledecegNivoa += panel.Visina;
-                SirinaAktivnogNivoa = panel.Sirina;
-
-                SmestiPanelUMatricu(0, panel.Sirina, VisinaAktivnogNivoa, panel.Visina);
-
-                SpakovaniPaneli.Add(panel);
-                return true;
+                return SmestiPanelNaSledeciNivo(panel);
             }
             
             return false;
+        }        
+
+        private bool SmestiPanelNaAktivniNivo(Panel panel)
+        {
+            AzurirajMatricu(SirinaAktivnogNivoa, panel.Sirina, VisinaAktivnogNivoa, panel.Visina);
+
+            if (VisinaSledecegNivoa == 0)
+            {
+                // Samo prilikom pakovanja prvog panela
+                // jer ce ubudece ova izmena biti radjena
+                // prilikom otvaranja novog nivoa
+                VisinaSledecegNivoa += panel.Visina;
+            }
+            SirinaAktivnogNivoa += panel.Sirina;
+
+            SpakovaniPaneli.Add(panel);
+            return true;
         }
-        private void SmestiPanelUMatricu(int pocetnaSirina, int sirinaPanela, int pocetnaVisina, int visinaPanela)
+
+        private bool SmestiPanelNaSledeciNivo(Panel panel)
+        {
+            // Započni novi nivo i smesti panel tamo.
+            VisinaAktivnogNivoa = VisinaSledecegNivoa;
+            VisinaSledecegNivoa += panel.Visina;
+            SirinaAktivnogNivoa = panel.Sirina;
+
+            AzurirajMatricu(0, panel.Sirina, VisinaAktivnogNivoa, panel.Visina);
+
+            SpakovaniPaneli.Add(panel);
+            return true;
+        }
+
+        private void AzurirajMatricu(int pocetnaSirina, int sirinaPanela, int pocetnaVisina, int visinaPanela)
         {
             for(int i = pocetnaVisina; i < pocetnaVisina + visinaPanela; i++)
             {

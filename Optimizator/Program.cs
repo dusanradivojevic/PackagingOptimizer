@@ -12,7 +12,16 @@ namespace Optimizator
         {
             var kontejneri = Generator.GenerisiKontejnere(10, 10, 10, 10, 10);
             //var paneli = Generator.GenerisiPanele(1, 8, 1, 7, 10);
-            var paneli = GenerisiPaneleIzPDFPrimera();            
+            var paneli = GenerisiPaneleIzPDFPrimera();
+
+            var ispunjeniUslovi = ProveraOsnovnihOgranicenja(paneli, kontejneri);
+            if (ispunjeniUslovi == false)
+            {
+                Console.WriteLine(Environment.NewLine + 
+                    "Nisu ispunjeni osnovni uslovi za vršenje optimizacije.");
+                Console.ReadKey();
+                return;
+            }
 
             //paneli = Sortiraj.PoPovrsini(paneli, SmerSortiranja.Opadajuce);
 
@@ -24,6 +33,28 @@ namespace Optimizator
             Console.ReadKey();
 
             kontejneri = IsprazniKontejnere(kontejneri.ToList());
+        }
+
+        private static bool ProveraOsnovnihOgranicenja(ICollection<Panel> paneli, ICollection<Kontejner> kontejneri)
+        {          
+            var ukupnaPovrsinaPanela = paneli.Sum(p => p.Povrsina);
+            var ukupnaPovrsinaKontejnera = kontejneri.Sum(k => k.Povrsina);
+            if (ukupnaPovrsinaPanela > ukupnaPovrsinaKontejnera)
+            {
+                Console.WriteLine("Ukupna površina panela ne sme biti veća od ukupne površine kontejnera!");
+                return false;
+            }
+
+            foreach(var panel in paneli)
+            {
+                if (kontejneri.Any(k => panel.Povrsina > k.Povrsina))
+                {
+                    Console.WriteLine("Panel ne sme imati veću površinu od kontejnera!");
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         private static ICollection<Panel> GenerisiPaneleIzPDFPrimera()
