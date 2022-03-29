@@ -10,8 +10,8 @@ namespace Optimizator
     {
         static void Main(string[] args)
         {
-            var kontejneri = Generator.GenerisiKontejnere(10, 10, 10, 10, 10);
-            //var paneli = Generator.GenerisiPanele(1, 8, 1, 7, 10);
+            var kontejneri = Generator.GenerisiKontejnere(10, 10, 10, 10, 1, 1, 10);
+            //var paneli = Generator.GenerisiPanele(1, 8, 1, 7, 0, 0, 10);
             var paneli = GenerisiPaneleIzPDFPrimera();
 
             var ispunjeniUslovi = ProveraOsnovnihOgranicenja(paneli, kontejneri);
@@ -45,13 +45,12 @@ namespace Optimizator
                 return false;
             }
 
-            foreach(var panel in paneli)
+            var ukupnaMasaPanela = paneli.Sum(p => p.Masa);
+            var ukupnaNosivostKontejnera = kontejneri.Sum(k => k.Nosivost);
+            if (ukupnaMasaPanela > ukupnaNosivostKontejnera)
             {
-                if (kontejneri.Any(k => panel.Povrsina > k.Povrsina))
-                {
-                    Console.WriteLine("Panel ne sme imati veću površinu od kontejnera!");
-                    return false;
-                }
+                Console.WriteLine("Ukupna masa panela ne sme biti veća od ukupne nosivosti kontejnera!");
+                return false;
             }
 
             return true;
@@ -61,13 +60,13 @@ namespace Optimizator
         {
             return new List<Panel>()
             {
-                new Panel(5,6),
-                new Panel(8,5),
-                new Panel(5,4),
-                new Panel(4,3),
-                new Panel(9,3),
-                new Panel(1,2),
-                new Panel(4,1),
+                new Panel(5,6,0),
+                new Panel(8,5,0),
+                new Panel(5,4,0),
+                new Panel(4,3,0),
+                new Panel(9,3,0),
+                new Panel(1,2,0),
+                new Panel(4,1,0),
             };
         }
 
@@ -97,7 +96,7 @@ namespace Optimizator
         {
             for (int i = 0; i < kontejneri.Count; i++)
             {
-                kontejneri[i] = new Kontejner(10, 10);
+                kontejneri[i] = new Kontejner(10, 10, 1);
             }
             return kontejneri;
         }

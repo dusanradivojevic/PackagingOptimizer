@@ -5,10 +5,12 @@ namespace Biblioteka.Modeli
 {
     public class Kontejner : Pravougaonik
     {
-        public Kontejner(int sirina, int visina) : base(sirina, visina)
+        public Kontejner(int sirina, int visina, int nosivost) : base(sirina, visina)
         {
+            Nosivost = nosivost;
             SpakovaniPaneli = new List<Panel>();
             GenerisiMatricu();
+            SpakovanaMasa = 0;
             VisinaAktivnogNivoa = 0;
             VisinaSledecegNivoa = 0;
             SirinaAktivnogNivoa = 0;
@@ -19,6 +21,8 @@ namespace Biblioteka.Modeli
             MatricaProstora = new bool[Sirina, Visina]; // podrazumevana vrednost je 'false'
         }
 
+        public int Nosivost { get; private set; }
+        public int SpakovanaMasa { get; private set; }
         public int SirinaAktivnogNivoa { get; private set; }
         public int VisinaAktivnogNivoa { get; private set; } // Pocetna visina trenutnog nivoa
         public int VisinaSledecegNivoa { get; private set; } // Pocetna visina sledeceg nivoa (= krajnja (gornja) visina trenutnog nivoa)
@@ -26,7 +30,18 @@ namespace Biblioteka.Modeli
         public ICollection<Panel> SpakovaniPaneli { get; set; }
         public bool SmestiPanel(Panel panel)
         {
-            if (panel.Sirina > Sirina || panel.Visina > Visina) return false;
+            if (panel.Sirina > Sirina || 
+                panel.Visina > Visina || 
+                panel.Masa > Nosivost)
+            {
+                return false;
+            }
+
+            // Da li kontejner ima dovoljnu raspoloživu nosivost za panel
+            if (Nosivost - SpakovanaMasa < panel.Masa)
+            {
+                return false;
+            }
 
             // Može da se smesti u širinu aktivnog nivoa?
             if (Sirina - SirinaAktivnogNivoa >= panel.Sirina && 
@@ -57,6 +72,7 @@ namespace Biblioteka.Modeli
                 VisinaSledecegNivoa += panel.Visina;
             }
             SirinaAktivnogNivoa += panel.Sirina;
+            SpakovanaMasa += panel.Masa;
 
             SpakovaniPaneli.Add(panel);
             return true;
@@ -68,6 +84,7 @@ namespace Biblioteka.Modeli
             VisinaAktivnogNivoa = VisinaSledecegNivoa;
             VisinaSledecegNivoa += panel.Visina;
             SirinaAktivnogNivoa = panel.Sirina;
+            SpakovanaMasa += panel.Masa;
 
             AzurirajMatricu(0, panel.Sirina, VisinaAktivnogNivoa, panel.Visina);
 
