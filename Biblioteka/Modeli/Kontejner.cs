@@ -28,6 +28,7 @@ namespace Biblioteka.Modeli
         public int VisinaSledecegNivoa { get; private set; } // Pocetna visina sledeceg nivoa (= krajnja (gornja) visina trenutnog nivoa)
         public bool[,] MatricaProstora { get; private set; }
         public ICollection<Panel> SpakovaniPaneli { get; set; }
+        public bool JePun { get; set; }
         public bool SmestiPanel(Panel panel)
         {
             if (panel.Sirina > Sirina || 

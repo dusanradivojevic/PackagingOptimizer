@@ -1,4 +1,5 @@
 ﻿using Biblioteka.Modeli;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -17,9 +18,12 @@ namespace Biblioteka
                 bool panelJeSmesten = false;
                 foreach(Kontejner k in listaAktivnihKontejnera)
                 {
+                    if (k.JePun) continue;
+
                     panelJeSmesten = k.SmestiPanel(p);
                     if (panelJeSmesten)
                     {
+                        ProveriIskoriscenostKontejnera(k);
                         break;
                     }
                 }
@@ -33,9 +37,11 @@ namespace Biblioteka
                 {
                     listaAktivnihKontejnera.Add(kontejneri[i]);
                     indexPoslednjegDodatogKontejnera++;
-                    panelJeSmesten = listaAktivnihKontejnera.Last().SmestiPanel(p);
+                    var poslednjiDodatKontejner = listaAktivnihKontejnera.Last();
+                    panelJeSmesten = poslednjiDodatKontejner.SmestiPanel(p);
                     if (panelJeSmesten)
                     {
+                        ProveriIskoriscenostKontejnera(poslednjiDodatKontejner);
                         break;
                     }
                 }                    
@@ -47,6 +53,20 @@ namespace Biblioteka
             }
 
             return kontejneri;
+        }
+
+        private static void ProveriIskoriscenostKontejnera(Kontejner k)
+        {
+            if (k.Visina - k.VisinaSledecegNivoa == 0 &&
+                k.Sirina - k.SirinaAktivnogNivoa == 0)
+            {
+                k.JePun = true;
+            }
+
+            if (k.Nosivost - k.SpakovanaMasa == 0)
+            {
+                k.JePun = true;
+            }    
         }
     }
 }
