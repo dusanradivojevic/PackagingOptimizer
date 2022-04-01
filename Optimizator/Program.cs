@@ -31,7 +31,7 @@ namespace Optimizator
             IspisiPalete(palete);
 
             Console.WriteLine($"Minimalni broj paleta za pakovanje ovih panela je: {palete.Count}");
-            Console.WriteLine($"Ukupan broj kontejnera (nivoa pakovanja) je: {VratiBrojPopunjenihKontejnera(palete)}");
+            Console.WriteLine($"Ukupan broj iskorišćenih kontejnera (nivoa pakovanja) je: {VratiBrojPopunjenihKontejnera(palete)}");
             Console.WriteLine($"Broj panela za koje nije bilo mesta: {paneliKojiNisuStali.Count}");
             Console.ReadKey();
         }
@@ -41,18 +41,18 @@ namespace Optimizator
             for(int i = 0; i < palete.Count; i++)
             {
                 Console.WriteLine($"Paleta {i}:");
-                IspisiNeprazneKontejnere(palete.ElementAt(i).Kontejneri);
+                IspisiNeprazneKontejnere(palete.ElementAt(i).Nivoi);
             }
         }
 
         private static int VratiBrojPopunjenihKontejnera(ICollection<Paleta> palete)
         {
-            return palete.Sum(p => p.Kontejneri.Where(k => k.SpakovaniPaneli.Count > 0).Count());
+            return palete.Sum(p => p.Nivoi.Where(k => k.SpakovaniPaneli.Count > 0).Count());
         }
 
         private static ICollection<Paleta> VratiPopunjenePalete(ICollection<Paleta> palete)
         {
-            return palete.Where(p => p.Kontejneri.Any(k => k.SpakovaniPaneli.Count > 0)).ToList();
+            return palete.Where(p => p.Nivoi.Any(k => k.SpakovaniPaneli.Count > 0)).ToList();
         }
 
         private static bool ProveraOsnovnihOgranicenja(ICollection<Panel> paneli, ICollection<Paleta> palete)
@@ -87,6 +87,51 @@ namespace Optimizator
                 new Panel(9,3,0),
                 new Panel(1,2,0),
                 new Panel(4,1,0),
+                new Panel(5,6,0),
+                new Panel(8,5,0),
+                new Panel(5,4,0),
+                new Panel(4,3,0),
+                new Panel(9,3,0),
+                new Panel(1,2,0),
+                new Panel(1,2,0),
+                new Panel(1,2,0),
+                new Panel(4,1,0),
+
+                //new Panel(5,6,0),
+                //new Panel(8,5,0),
+                //new Panel(5,4,0),
+                //new Panel(4,3,0),
+                //new Panel(9,3,0),
+                //new Panel(1,2,0),
+                //new Panel(4,1,0),
+                //new Panel(5,6,0),
+                //new Panel(8,5,0),
+                //new Panel(5,4,0),
+                //new Panel(4,3,0),
+                //new Panel(9,3,0),
+                //new Panel(1,2,0),
+                //new Panel(4,1,0),
+                //new Panel(5,6,0),
+                //new Panel(8,5,0),
+                //new Panel(5,4,0),
+                //new Panel(4,3,0),
+                //new Panel(9,3,0),
+                //new Panel(1,2,0),
+                //new Panel(4,1,0),
+                //new Panel(5,6,0),
+                //new Panel(8,5,0),
+                //new Panel(5,4,0),
+                //new Panel(4,3,0),
+                //new Panel(9,3,0),
+                //new Panel(1,2,0),
+                //new Panel(4,1,0),
+                //new Panel(5,6,0),
+                //new Panel(8,5,0),
+                //new Panel(5,4,0),
+                //new Panel(4,3,0),
+                //new Panel(9,3,0),
+                //new Panel(1,2,0),
+                //new Panel(4,1,0),
             };
         }
 
@@ -102,12 +147,12 @@ namespace Optimizator
                 var kontejner = kontejneri.ElementAt(k);
                 if (kontejner.SpakovaniPaneli.Count == 0) continue;
 
-                Console.WriteLine($"Kontejner {k}:");
+                Console.WriteLine($"Nivo {k}:");
                 for (int i = 9; i >= 0; i--)
                 {
                     for (int j = 0; j < 10; j++)
                     {
-                        Console.Write(kontejner.MatricaProstora[i, j] ? "X" : "-");
+                        Console.Write(kontejner.MatricaProstora[i, j] != 0 ? $"{kontejner.MatricaProstora[i, j]}" : "-");
                     }
                     Console.WriteLine();
                 }

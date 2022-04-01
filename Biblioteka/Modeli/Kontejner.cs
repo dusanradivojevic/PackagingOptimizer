@@ -18,14 +18,14 @@ namespace Biblioteka.Modeli
 
         private void GenerisiMatricu()
         {
-            MatricaProstora = new bool[Sirina, Visina]; // podrazumevana vrednost je 'false'
+            MatricaProstora = new int[Sirina, Visina]; // podrazumevana vrednost je '0'
         }
 
         public int SpakovanaMasa { get; private set; }
         public int SirinaAktivnogNivoa { get; private set; }
         public int VisinaAktivnogNivoa { get; private set; } // Pocetna visina trenutnog nivoa
         public int VisinaSledecegNivoa { get; private set; } // Pocetna visina sledeceg nivoa (= krajnja (gornja) visina trenutnog nivoa)
-        public bool[,] MatricaProstora { get; private set; }
+        public int[,] MatricaProstora { get; private set; }
         public ICollection<Panel> SpakovaniPaneli { get; set; }
         public bool JePun { get; set; }
         public bool SmestiPanel(Panel panel)
@@ -93,7 +93,7 @@ namespace Biblioteka.Modeli
             {
                 for (int j = pocetnaSirina; j < pocetnaSirina + sirinaPanela; j++)
                 {
-                    MatricaProstora[i, j] = true;
+                    MatricaProstora[i, j] = SpakovaniPaneli.Count % 10 + 1;
                 }
             }
         }

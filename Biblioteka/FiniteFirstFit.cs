@@ -79,7 +79,7 @@ namespace Biblioteka
                         continue;
                     }
 
-                    foreach (Kontejner kontejner in paleta.Kontejneri)
+                    foreach (Kontejner kontejner in paleta.Nivoi)
                     {
                         if (kontejner.JePun) continue;
 
