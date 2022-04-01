@@ -19,21 +19,7 @@ namespace Biblioteka
             }
 
             return palete;
-        }
-        /*public static ICollection<Kontejner> GenerisiKontejnere(int minSirina, int maxSirina, int minVisina, int maxVisina, int broj)
-        {
-            var kontejneri = new List<Kontejner>();
-
-            for (int i = 0; i < broj; i++)
-            {
-                var k = new Kontejner(Random.Next(minSirina, maxSirina),
-                                      Random.Next(minVisina, maxVisina));
-
-                kontejneri.Add(k);
-            }
-
-            return kontejneri;
-        } */
+        }        
         public static ICollection<Kontejner> GenerisiKontejnere(int sirina, int visina, int broj)
         {
             var kontejneri = new List<Kontejner>();
@@ -65,6 +51,117 @@ namespace Biblioteka
             }
 
             return paneli;
+        }
+        public static ICollection<Panel> GenerisiPaneleIzPDFPrimera()
+        {
+            return new List<Panel>()
+            {
+                new Panel(5,6,3),
+                new Panel(8,5,5),
+                new Panel(5,4,3),
+                new Panel(4,3,2),
+                new Panel(9,3,5),
+                new Panel(1,2,1),
+                new Panel(4,1,2),
+                new Panel(5,6,3),
+                new Panel(8,5,5),
+                new Panel(5,4,3),
+                new Panel(4,3,2),
+                new Panel(9,3,5),
+                new Panel(1,2,1),
+                new Panel(4,1,2),
+                new Panel(5,6,3),
+                new Panel(8,5,5),
+                new Panel(5,4,3),
+                new Panel(4,3,2),
+                new Panel(9,3,5),
+                new Panel(1,2,1),
+                new Panel(4,1,2),
+                new Panel(5,6,3),
+                new Panel(8,5,5),
+                new Panel(5,4,3),
+                new Panel(4,3,2),
+                new Panel(9,3,5),
+                new Panel(1,2,1),
+                new Panel(4,1,2),
+                new Panel(5,6,3),
+                new Panel(8,5,5),
+                new Panel(5,4,3),
+                new Panel(4,3,2),
+                new Panel(9,3,5),
+                new Panel(1,2,1),
+                new Panel(4,1,2),
+                new Panel(5,6,3),
+                new Panel(8,5,5),
+                new Panel(5,4,3),
+                new Panel(4,3,2),
+                new Panel(9,3,5),
+                new Panel(1,2,1),
+                new Panel(4,1,2),
+                new Panel(5,6,3),
+                new Panel(8,5,5),
+                new Panel(5,4,3),
+                new Panel(4,3,2),
+                new Panel(9,3,5),
+                new Panel(1,2,1),
+                new Panel(4,1,2),
+                new Panel(5,6,3),
+                new Panel(8,5,5),
+                new Panel(5,4,3),
+                new Panel(4,3,2),
+                new Panel(9,3,5),
+                new Panel(1,2,1),
+                new Panel(4,1,2),
+                new Panel(5,6,3),
+                new Panel(8,5,5),
+                new Panel(5,4,3),
+                new Panel(4,3,2),
+                new Panel(9,3,5),
+                new Panel(1,2,1),
+                new Panel(4,1,2),
+                new Panel(5,6,3),
+                new Panel(8,5,5),
+                new Panel(5,4,3),
+                new Panel(4,3,2),
+                new Panel(9,3,5),
+                new Panel(1,2,1),
+                new Panel(4,1,2),
+                new Panel(5,6,3),
+                new Panel(8,5,5),
+                new Panel(5,4,3),
+                new Panel(4,3,2),
+                new Panel(9,3,5),
+                new Panel(1,2,1),
+                new Panel(4,1,2),
+                new Panel(5,6,3),
+                new Panel(8,5,5),
+                new Panel(5,4,3),
+                new Panel(4,3,2),
+                new Panel(9,3,5),
+                new Panel(1,2,1),
+                new Panel(4,1,2),
+                new Panel(5,6,3),
+                new Panel(8,5,5),
+                new Panel(5,4,3),
+                new Panel(4,3,2),
+                new Panel(9,3,5),
+                new Panel(1,2,1),
+                new Panel(4,1,2),
+                new Panel(5,6,3),
+                new Panel(8,5,5),
+                new Panel(5,4,3),
+                new Panel(4,3,2),
+                new Panel(9,3,5),
+                new Panel(1,2,1),
+                new Panel(4,1,2),
+                new Panel(5,6,3),
+                new Panel(8,5,5),
+                new Panel(5,4,3),
+                new Panel(4,3,2),
+                new Panel(9,3,5),
+                new Panel(1,2,1),
+                new Panel(4,1,2),
+            };
         }
     }
 }

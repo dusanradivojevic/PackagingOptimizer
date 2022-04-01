@@ -19,12 +19,22 @@ namespace Biblioteka.Modeli
         public int Nosivost { get; private set; }
         public int UkupnaSpakovanaMasa => Nivoi.Sum(k => k.SpakovanaMasa);
         public bool JePuna => UkupnaSpakovanaMasa >= 0.95 * Nosivost;
-        public int BrojNivoa { get; private set; }
-        public bool ImaSveNivoe => BrojNivoa == Nivoi.Count;
-
+        public bool JeNeprazna => Nivoi.Any(k => k.SpakovaniPaneli.Count > 0);
+        public int BrojNivoa { get; private set; }        
         public bool MozeStati(Panel panel)
         {
             return Nosivost - UkupnaSpakovanaMasa >= panel.Masa;
+        }
+        public void SpakujNaPaletu(Panel panel)
+        {
+            foreach (Kontejner kontejner in Nivoi)
+            {
+                if (kontejner.JePun) continue;
+
+                kontejner.SpakujUKontejner(panel);
+
+                if (panel.JeSpakovan) return;
+            }
         }
     }
 }

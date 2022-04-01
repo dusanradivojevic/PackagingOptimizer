@@ -7,70 +7,10 @@ namespace Biblioteka
 {
     public class FiniteFirstFit
     {
-        public static ICollection<Kontejner> Optimizuj(ICollection<Panel> paneli, List<Kontejner> kontejneri)
+        public static void Spakuj(ICollection<Panel> paneli, ICollection<Paleta> palete)
         {
-            var listaPanelaKojiNisuStali = new List<Panel>();
-            var listaAktivnihKontejnera = new List<Kontejner>();
-            int indexPoslednjegDodatogKontejnera = 0;
-
-            foreach(Panel p in paneli)
-            {
-                bool panelJeSmesten = false;
-                foreach(Kontejner k in listaAktivnihKontejnera)
-                {
-                    if (k.JePun) continue;
-
-                    panelJeSmesten = k.SmestiPanel(p);
-                    if (panelJeSmesten)
-                    {
-                        ProveriIskoriscenostKontejnera(k);
-                        break;
-                    }
-                }
-
-                if (panelJeSmesten) continue;
-                
-                // Pošto panel nije smešten,
-                // dodajemo novi kontejner iz trenutno neaktivnih, raspoloživih kontejnera,
-                // dok ne smestimo panel ili dok nam ne ponestane kontejnera.
-                for(int i = indexPoslednjegDodatogKontejnera; i < kontejneri.Count; i++)
-                {
-                    listaAktivnihKontejnera.Add(kontejneri[i]);
-                    indexPoslednjegDodatogKontejnera++;
-                    var poslednjiDodatKontejner = listaAktivnihKontejnera.Last();
-                    panelJeSmesten = poslednjiDodatKontejner.SmestiPanel(p);
-                    if (panelJeSmesten)
-                    {
-                        ProveriIskoriscenostKontejnera(poslednjiDodatKontejner);
-                        break;
-                    }
-                }                    
-                
-                if (panelJeSmesten == false)
-                {
-                    listaPanelaKojiNisuStali.Add(p);
-                }
-            }
-
-            return kontejneri;
-        }
-        private static void ProveriIskoriscenostKontejnera(Kontejner k)
-        {
-            if (k.Visina - k.VisinaSledecegNivoa == 0 &&
-                k.Sirina - k.SirinaAktivnogNivoa == 0)
-            {
-                k.JePun = true;
-            } 
-        }
-
-        public static ICollection<Panel> Spakuj(ICollection<Panel> paneli, ICollection<Paleta> palete)
-        {
-            var listaPanelaKojiNisuStali = new List<Panel>();
-            // lista aktivnih paleta ?
-
             foreach (Panel panel in paneli)
             {
-                bool panelJeSmesten = false;
                 foreach(Paleta paleta in palete)
                 {
                     if (paleta.JePuna ||
@@ -79,32 +19,34 @@ namespace Biblioteka
                         continue;
                     }
 
-                    foreach (Kontejner kontejner in paleta.Nivoi)
-                    {
-                        if (kontejner.JePun) continue;
+                    paleta.SpakujNaPaletu(panel);
 
-                        panelJeSmesten = kontejner.SmestiPanel(panel);
-                        if (panelJeSmesten)
-                        {
-                            ProveriIskoriscenostKontejnera(kontejner);
-                            break;
-                        }
-                    }
-
-                    if (panelJeSmesten)
+                    if (panel.JeSpakovan)
                     {
                         break;
                     }
                 }
-
-                if (panelJeSmesten == false) 
-                {
-                    listaPanelaKojiNisuStali.Add(panel);
-                }
+            }
+        }
+        public static bool ProveraOsnovnihOgranicenja(ICollection<Panel> paneli, ICollection<Paleta> palete)
+        {
+            var ukupnaPovrsinaPanela = paneli.Sum(p => p.Povrsina);
+            var ukupnaPovrsinaZaPakovanje = palete.Sum(p => p.Povrsina * p.BrojNivoa);
+            if (ukupnaPovrsinaPanela > ukupnaPovrsinaZaPakovanje)
+            {
+                Console.WriteLine("Ukupna površina panela ne sme biti veća od ukupne površine za pakovanje!");
+                return false;
             }
 
-            return listaPanelaKojiNisuStali;
-        }
+            var ukupnaMasaPanela = paneli.Sum(p => p.Masa);
+            var ukupnaNosivostPaleta = palete.Sum(p => p.Nosivost);
+            if (ukupnaMasaPanela > ukupnaNosivostPaleta)
+            {
+                Console.WriteLine("Ukupna masa panela ne sme biti veća od ukupne nosivosti paleta!");
+                return false;
+            }
 
+            return true;
+        }
     }
 }

@@ -28,12 +28,12 @@ namespace Biblioteka.Modeli
         public int[,] MatricaProstora { get; private set; }
         public ICollection<Panel> SpakovaniPaneli { get; set; }
         public bool JePun { get; set; }
-        public bool SmestiPanel(Panel panel)
+        public void SpakujUKontejner(Panel panel)
         {
             if (panel.Sirina > Sirina || 
                 panel.Visina > Visina)
             {
-                return false;
+                return;
             }
 
             // Može da se smesti u širinu aktivnog nivoa?
@@ -42,20 +42,20 @@ namespace Biblioteka.Modeli
                 VisinaSledecegNivoa == 0)
                )
             {
-                return SmestiPanelNaAktivniNivo(panel);
+                SpakujPanelNaAktivniNivo(panel);
+                return;
             }
 
             // Ne može da se smesti na aktivni nivo,
             // da li može na sledeći?
             if (Visina - VisinaSledecegNivoa >= panel.Visina)
             {
-                return SmestiPanelNaSledeciNivo(panel);
+                SpakujPanelNaSledeciNivo(panel);
+                return;
             }
-            
-            return false;
         }        
 
-        private bool SmestiPanelNaAktivniNivo(Panel panel)
+        private void SpakujPanelNaAktivniNivo(Panel panel)
         {
             AzurirajMatricu(SirinaAktivnogNivoa, panel.Sirina, VisinaAktivnogNivoa, panel.Visina);
 
@@ -70,10 +70,11 @@ namespace Biblioteka.Modeli
             SpakovanaMasa += panel.Masa;
 
             SpakovaniPaneli.Add(panel);
-            return true;
+            panel.JeSpakovan = true;
+            ProveriIskoriscenostKontejnera();
         }
 
-        private bool SmestiPanelNaSledeciNivo(Panel panel)
+        private void SpakujPanelNaSledeciNivo(Panel panel)
         {
             // Započni novi nivo i smesti panel tamo.
             VisinaAktivnogNivoa = VisinaSledecegNivoa;
@@ -84,7 +85,8 @@ namespace Biblioteka.Modeli
             AzurirajMatricu(0, panel.Sirina, VisinaAktivnogNivoa, panel.Visina);
 
             SpakovaniPaneli.Add(panel);
-            return true;
+            panel.JeSpakovan = true;
+            ProveriIskoriscenostKontejnera();
         }
 
         private void AzurirajMatricu(int pocetnaSirina, int sirinaPanela, int pocetnaVisina, int visinaPanela)
@@ -93,8 +95,17 @@ namespace Biblioteka.Modeli
             {
                 for (int j = pocetnaSirina; j < pocetnaSirina + sirinaPanela; j++)
                 {
-                    MatricaProstora[i, j] = SpakovaniPaneli.Count % 10 + 1;
+                    MatricaProstora[i, j] = SpakovaniPaneli.Count % 9 + 1;
                 }
+            }
+        }
+
+        private void ProveriIskoriscenostKontejnera()
+        {
+            if (Visina - VisinaSledecegNivoa == 0 &&
+                Sirina - SirinaAktivnogNivoa == 0)
+            {
+                JePun = true;
             }
         }
     }

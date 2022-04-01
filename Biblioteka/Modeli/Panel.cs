@@ -8,6 +8,7 @@
         }
 
         public int Masa { get; private set; }
+        public bool JeSpakovan { get; set; }
 
         public override string ToString()
         {
