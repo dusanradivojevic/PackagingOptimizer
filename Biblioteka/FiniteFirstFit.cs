@@ -54,19 +54,57 @@ namespace Biblioteka
 
             return kontejneri;
         }
-
         private static void ProveriIskoriscenostKontejnera(Kontejner k)
         {
             if (k.Visina - k.VisinaSledecegNivoa == 0 &&
                 k.Sirina - k.SirinaAktivnogNivoa == 0)
             {
                 k.JePun = true;
+            } 
+        }
+
+        public static ICollection<Panel> Spakuj(ICollection<Panel> paneli, ICollection<Paleta> palete)
+        {
+            var listaPanelaKojiNisuStali = new List<Panel>();
+            // lista aktivnih paleta ?
+
+            foreach (Panel panel in paneli)
+            {
+                bool panelJeSmesten = false;
+                foreach(Paleta paleta in palete)
+                {
+                    if (paleta.JePuna ||
+                        paleta.MozeStati(panel) == false)
+                    {
+                        continue;
+                    }
+
+                    foreach (Kontejner kontejner in paleta.Kontejneri)
+                    {
+                        if (kontejner.JePun) continue;
+
+                        panelJeSmesten = kontejner.SmestiPanel(panel);
+                        if (panelJeSmesten)
+                        {
+                            ProveriIskoriscenostKontejnera(kontejner);
+                            break;
+                        }
+                    }
+
+                    if (panelJeSmesten)
+                    {
+                        break;
+                    }
+                }
+
+                if (panelJeSmesten == false) 
+                {
+                    listaPanelaKojiNisuStali.Add(panel);
+                }
             }
 
-            if (k.Nosivost - k.SpakovanaMasa == 0)
-            {
-                k.JePun = true;
-            }    
+            return listaPanelaKojiNisuStali;
         }
+
     }
 }

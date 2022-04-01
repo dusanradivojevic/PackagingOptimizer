@@ -5,10 +5,10 @@ namespace Biblioteka.Modeli
 {
     public class Kontejner : Pravougaonik
     {
-        public Kontejner(int sirina, int visina, int nosivost) : base(sirina, visina)
+        public Kontejner(int sirina, int visina) : base(sirina, visina)
         {
-            Nosivost = nosivost;
             SpakovaniPaneli = new List<Panel>();
+            JePun = false;
             GenerisiMatricu();
             SpakovanaMasa = 0;
             VisinaAktivnogNivoa = 0;
@@ -21,7 +21,6 @@ namespace Biblioteka.Modeli
             MatricaProstora = new bool[Sirina, Visina]; // podrazumevana vrednost je 'false'
         }
 
-        public int Nosivost { get; private set; }
         public int SpakovanaMasa { get; private set; }
         public int SirinaAktivnogNivoa { get; private set; }
         public int VisinaAktivnogNivoa { get; private set; } // Pocetna visina trenutnog nivoa
@@ -32,14 +31,7 @@ namespace Biblioteka.Modeli
         public bool SmestiPanel(Panel panel)
         {
             if (panel.Sirina > Sirina || 
-                panel.Visina > Visina || 
-                panel.Masa > Nosivost)
-            {
-                return false;
-            }
-
-            // Da li kontejner ima dovoljnu raspoloživu nosivost za panel
-            if (Nosivost - SpakovanaMasa < panel.Masa)
+                panel.Visina > Visina)
             {
                 return false;
             }

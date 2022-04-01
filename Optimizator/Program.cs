@@ -10,11 +10,12 @@ namespace Optimizator
     {
         static void Main(string[] args)
         {
-            var kontejneri = Generator.GenerisiKontejnere(10, 10, 10, 10, 1, 1, 10);
+            var palete = Generator.GenerisiPalete(10, 10, 10, 5, 6);
+            //var kontejneri = Generator.GenerisiKontejnere(10, 10, 10, 10, 1, 1, 10);
             //var paneli = Generator.GenerisiPanele(1, 8, 1, 7, 0, 0, 10);
             var paneli = GenerisiPaneleIzPDFPrimera();
 
-            var ispunjeniUslovi = ProveraOsnovnihOgranicenja(paneli, kontejneri);
+            var ispunjeniUslovi = ProveraOsnovnihOgranicenja(paneli, palete);
             if (ispunjeniUslovi == false)
             {
                 Console.WriteLine(Environment.NewLine + 
@@ -25,31 +26,50 @@ namespace Optimizator
 
             //paneli = Sortiraj.PoPovrsini(paneli, SmerSortiranja.Opadajuce);
 
-            kontejneri = FiniteFirstFit.Optimizuj(paneli, kontejneri.ToList());
-            kontejneri = VratiPopunjeneKontejnere(kontejneri);
-            IspisiKontejnere(kontejneri);
+            var paneliKojiNisuStali = FiniteFirstFit.Spakuj(paneli, palete);
+            palete = VratiPopunjenePalete(palete);
+            IspisiPalete(palete);
 
-            Console.WriteLine($"Minimalni broj kontejnera za pakovanje ovih panela je: {kontejneri.Count}");
+            Console.WriteLine($"Minimalni broj paleta za pakovanje ovih panela je: {palete.Count}");
+            Console.WriteLine($"Ukupan broj kontejnera (nivoa pakovanja) je: {VratiBrojPopunjenihKontejnera(palete)}");
+            Console.WriteLine($"Broj panela za koje nije bilo mesta: {paneliKojiNisuStali.Count}");
             Console.ReadKey();
-
-            kontejneri = IsprazniKontejnere(kontejneri.ToList());
         }
 
-        private static bool ProveraOsnovnihOgranicenja(ICollection<Panel> paneli, ICollection<Kontejner> kontejneri)
+        private static void IspisiPalete(ICollection<Paleta> palete)
+        {
+            for(int i = 0; i < palete.Count; i++)
+            {
+                Console.WriteLine($"Paleta {i}:");
+                IspisiNeprazneKontejnere(palete.ElementAt(i).Kontejneri);
+            }
+        }
+
+        private static int VratiBrojPopunjenihKontejnera(ICollection<Paleta> palete)
+        {
+            return palete.Sum(p => p.Kontejneri.Where(k => k.SpakovaniPaneli.Count > 0).Count());
+        }
+
+        private static ICollection<Paleta> VratiPopunjenePalete(ICollection<Paleta> palete)
+        {
+            return palete.Where(p => p.Kontejneri.Any(k => k.SpakovaniPaneli.Count > 0)).ToList();
+        }
+
+        private static bool ProveraOsnovnihOgranicenja(ICollection<Panel> paneli, ICollection<Paleta> palete)
         {          
             var ukupnaPovrsinaPanela = paneli.Sum(p => p.Povrsina);
-            var ukupnaPovrsinaKontejnera = kontejneri.Sum(k => k.Povrsina);
-            if (ukupnaPovrsinaPanela > ukupnaPovrsinaKontejnera)
+            var ukupnaPovrsinaZaPakovanje = palete.Sum(p => p.Povrsina * p.BrojNivoa);
+            if (ukupnaPovrsinaPanela > ukupnaPovrsinaZaPakovanje)
             {
-                Console.WriteLine("Ukupna površina panela ne sme biti veća od ukupne površine kontejnera!");
+                Console.WriteLine("Ukupna površina panela ne sme biti veća od ukupne površine za pakovanje!");
                 return false;
             }
 
             var ukupnaMasaPanela = paneli.Sum(p => p.Masa);
-            var ukupnaNosivostKontejnera = kontejneri.Sum(k => k.Nosivost);
-            if (ukupnaMasaPanela > ukupnaNosivostKontejnera)
+            var ukupnaNosivostPaleta = palete.Sum(p => p.Nosivost);
+            if (ukupnaMasaPanela > ukupnaNosivostPaleta)
             {
-                Console.WriteLine("Ukupna masa panela ne sme biti veća od ukupne nosivosti kontejnera!");
+                Console.WriteLine("Ukupna masa panela ne sme biti veća od ukupne nosivosti paleta!");
                 return false;
             }
 
@@ -75,16 +95,19 @@ namespace Optimizator
             return kontejneri.Where(k => k.SpakovaniPaneli.Count > 0).ToList();
         }
 
-        private static void IspisiKontejnere(ICollection<Kontejner> kontejneri)
+        private static void IspisiNeprazneKontejnere(ICollection<Kontejner> kontejneri)
         {
-            foreach(Kontejner k in kontejneri)
+            for(int k = 0; k < kontejneri.Count; k++)
             {
-                if (k.SpakovaniPaneli.Count == 0) continue;
+                var kontejner = kontejneri.ElementAt(k);
+                if (kontejner.SpakovaniPaneli.Count == 0) continue;
+
+                Console.WriteLine($"Kontejner {k}:");
                 for (int i = 9; i >= 0; i--)
                 {
                     for (int j = 0; j < 10; j++)
                     {
-                        Console.Write(k.MatricaProstora[i, j] ? "X" : "-");
+                        Console.Write(kontejner.MatricaProstora[i, j] ? "X" : "-");
                     }
                     Console.WriteLine();
                 }
@@ -96,7 +119,7 @@ namespace Optimizator
         {
             for (int i = 0; i < kontejneri.Count; i++)
             {
-                kontejneri[i] = new Kontejner(10, 10, 1);
+                kontejneri[i] = new Kontejner(10, 10);
             }
             return kontejneri;
         }
