@@ -38,7 +38,9 @@ namespace Biblioteka.Modeli
 
             // Može da se smesti u širinu aktivnog nivoa?
             if (Sirina - SirinaAktivnogNivoa >= panel.Sirina && 
-                (VisinaSledecegNivoa >= panel.Visina || VisinaSledecegNivoa == 0))
+                (VisinaSledecegNivoa - VisinaAktivnogNivoa >= panel.Visina || 
+                VisinaSledecegNivoa == 0)
+               )
             {
                 return SmestiPanelNaAktivniNivo(panel);
             }
